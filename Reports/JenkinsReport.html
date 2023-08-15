@@ -1,0 +1,479 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8"/>
+    <title>JenkinsReport.html</title>
+    <link href="assets/style.css" rel="stylesheet" type="text/css"/></head>
+  <body onLoad="init()">
+    <script>/* This Source Code Form is subject to the terms of the Mozilla Public
+ * License, v. 2.0. If a copy of the MPL was not distributed with this file,
+ * You can obtain one at http://mozilla.org/MPL/2.0/. */
+
+
+function toArray(iter) {
+    if (iter === null) {
+        return null;
+    }
+    return Array.prototype.slice.call(iter);
+}
+
+function find(selector, elem) { // eslint-disable-line no-redeclare
+    if (!elem) {
+        elem = document;
+    }
+    return elem.querySelector(selector);
+}
+
+function findAll(selector, elem) {
+    if (!elem) {
+        elem = document;
+    }
+    return toArray(elem.querySelectorAll(selector));
+}
+
+function sortColumn(elem) {
+    toggleSortStates(elem);
+    const colIndex = toArray(elem.parentNode.childNodes).indexOf(elem);
+    let key;
+    if (elem.classList.contains('result')) {
+        key = keyResult;
+    } else if (elem.classList.contains('links')) {
+        key = keyLink;
+    } else {
+        key = keyAlpha;
+    }
+    sortTable(elem, key(colIndex));
+}
+
+function showAllExtras() { // eslint-disable-line no-unused-vars
+    findAll('.col-result').forEach(showExtras);
+}
+
+function hideAllExtras() { // eslint-disable-line no-unused-vars
+    findAll('.col-result').forEach(hideExtras);
+}
+
+function showExtras(colresultElem) {
+    const extras = colresultElem.parentNode.nextElementSibling;
+    const expandcollapse = colresultElem.firstElementChild;
+    extras.classList.remove('collapsed');
+    expandcollapse.classList.remove('expander');
+    expandcollapse.classList.add('collapser');
+}
+
+function hideExtras(colresultElem) {
+    const extras = colresultElem.parentNode.nextElementSibling;
+    const expandcollapse = colresultElem.firstElementChild;
+    extras.classList.add('collapsed');
+    expandcollapse.classList.remove('collapser');
+    expandcollapse.classList.add('expander');
+}
+
+function showFilters() {
+    let visibleString = getQueryParameter('visible') || 'all';
+    visibleString = visibleString.toLowerCase();
+    const checkedItems = visibleString.split(',');
+
+    const filterItems = document.getElementsByClassName('filter');
+    for (let i = 0; i < filterItems.length; i++) {
+        filterItems[i].hidden = false;
+
+        if (visibleString != 'all') {
+            filterItems[i].checked = checkedItems.includes(filterItems[i].getAttribute('data-test-result'));
+            filterTable(filterItems[i]);
+        }
+    }
+}
+
+function addCollapse() {
+    // Add links for show/hide all
+    const resulttable = find('table#results-table');
+    const showhideall = document.createElement('p');
+    showhideall.innerHTML = '<a href="javascript:showAllExtras()">Show all details</a> / ' +
+                            '<a href="javascript:hideAllExtras()">Hide all details</a>';
+    resulttable.parentElement.insertBefore(showhideall, resulttable);
+
+    // Add show/hide link to each result
+    findAll('.col-result').forEach(function(elem) {
+        const collapsed = getQueryParameter('collapsed') || 'Passed';
+        const extras = elem.parentNode.nextElementSibling;
+        const expandcollapse = document.createElement('span');
+        if (extras.classList.contains('collapsed')) {
+            expandcollapse.classList.add('expander');
+        } else if (collapsed.includes(elem.innerHTML)) {
+            extras.classList.add('collapsed');
+            expandcollapse.classList.add('expander');
+        } else {
+            expandcollapse.classList.add('collapser');
+        }
+        elem.appendChild(expandcollapse);
+
+        elem.addEventListener('click', function(event) {
+            if (event.currentTarget.parentNode.nextElementSibling.classList.contains('collapsed')) {
+                showExtras(event.currentTarget);
+            } else {
+                hideExtras(event.currentTarget);
+            }
+        });
+    });
+}
+
+function getQueryParameter(name) {
+    const match = RegExp('[?&]' + name + '=([^&]*)').exec(window.location.search);
+    return match && decodeURIComponent(match[1].replace(/\+/g, ' '));
+}
+
+function init () { // eslint-disable-line no-unused-vars
+    resetSortHeaders();
+
+    addCollapse();
+
+    showFilters();
+
+    sortColumn(find('.initial-sort'));
+
+    findAll('.sortable').forEach(function(elem) {
+        elem.addEventListener('click',
+            function() {
+                sortColumn(elem);
+            }, false);
+    });
+}
+
+function sortTable(clicked, keyFunc) {
+    const rows = findAll('.results-table-row');
+    const reversed = !clicked.classList.contains('asc');
+    const sortedRows = sort(rows, keyFunc, reversed);
+    /* Whole table is removed here because browsers acts much slower
+     * when appending existing elements.
+     */
+    const thead = document.getElementById('results-table-head');
+    document.getElementById('results-table').remove();
+    const parent = document.createElement('table');
+    parent.id = 'results-table';
+    parent.appendChild(thead);
+    sortedRows.forEach(function(elem) {
+        parent.appendChild(elem);
+    });
+    document.getElementsByTagName('BODY')[0].appendChild(parent);
+}
+
+function sort(items, keyFunc, reversed) {
+    const sortArray = items.map(function(item, i) {
+        return [keyFunc(item), i];
+    });
+
+    sortArray.sort(function(a, b) {
+        const keyA = a[0];
+        const keyB = b[0];
+
+        if (keyA == keyB) return 0;
+
+        if (reversed) {
+            return keyA < keyB ? 1 : -1;
+        } else {
+            return keyA > keyB ? 1 : -1;
+        }
+    });
+
+    return sortArray.map(function(item) {
+        const index = item[1];
+        return items[index];
+    });
+}
+
+function keyAlpha(colIndex) {
+    return function(elem) {
+        return elem.childNodes[1].childNodes[colIndex].firstChild.data.toLowerCase();
+    };
+}
+
+function keyLink(colIndex) {
+    return function(elem) {
+        const dataCell = elem.childNodes[1].childNodes[colIndex].firstChild;
+        return dataCell == null ? '' : dataCell.innerText.toLowerCase();
+    };
+}
+
+function keyResult(colIndex) {
+    return function(elem) {
+        const strings = ['Error', 'Failed', 'Rerun', 'XFailed', 'XPassed',
+            'Skipped', 'Passed'];
+        return strings.indexOf(elem.childNodes[1].childNodes[colIndex].firstChild.data);
+    };
+}
+
+function resetSortHeaders() {
+    findAll('.sort-icon').forEach(function(elem) {
+        elem.parentNode.removeChild(elem);
+    });
+    findAll('.sortable').forEach(function(elem) {
+        const icon = document.createElement('div');
+        icon.className = 'sort-icon';
+        icon.textContent = 'vvv';
+        elem.insertBefore(icon, elem.firstChild);
+        elem.classList.remove('desc', 'active');
+        elem.classList.add('asc', 'inactive');
+    });
+}
+
+function toggleSortStates(elem) {
+    //if active, toggle between asc and desc
+    if (elem.classList.contains('active')) {
+        elem.classList.toggle('asc');
+        elem.classList.toggle('desc');
+    }
+
+    //if inactive, reset all other functions and add ascending active
+    if (elem.classList.contains('inactive')) {
+        resetSortHeaders();
+        elem.classList.remove('inactive');
+        elem.classList.add('active');
+    }
+}
+
+function isAllRowsHidden(value) {
+    return value.hidden == false;
+}
+
+function filterTable(elem) { // eslint-disable-line no-unused-vars
+    const outcomeAtt = 'data-test-result';
+    const outcome = elem.getAttribute(outcomeAtt);
+    const classOutcome = outcome + ' results-table-row';
+    const outcomeRows = document.getElementsByClassName(classOutcome);
+
+    for(let i = 0; i < outcomeRows.length; i++){
+        outcomeRows[i].hidden = !elem.checked;
+    }
+
+    const rows = findAll('.results-table-row').filter(isAllRowsHidden);
+    const allRowsHidden = rows.length == 0 ? true : false;
+    const notFoundMessage = document.getElementById('not-found-message');
+    notFoundMessage.hidden = !allRowsHidden;
+}
+</script>
+    <h1>JenkinsReport.html</h1>
+    <p>Report generated on 15-Aug-2023 at 20:15:14 by <a href="https://pypi.python.org/pypi/pytest-html">pytest-html</a> v3.2.0</p>
+    <h2>Environment</h2>
+    <table id="environment">
+      <tr>
+        <td>BUILD_ID</td>
+        <td>1</td></tr>
+      <tr>
+        <td>BUILD_NUMBER</td>
+        <td>1</td></tr>
+      <tr>
+        <td>BUILD_TAG</td>
+        <td>jenkins-orangeHRM1-1</td></tr>
+      <tr>
+        <td>BUILD_URL</td>
+        <td><a href="http://localhost:8081/job/orangeHRM1/1/" target="_blank">http://localhost:8081/job/orangeHRM1/1/</a></td></tr>
+      <tr>
+        <td>CI</td>
+        <td>true</td></tr>
+      <tr>
+        <td>EXECUTOR_NUMBER</td>
+        <td>1</td></tr>
+      <tr>
+        <td>Environment</td>
+        <td>Test</td></tr>
+      <tr>
+        <td>JENKINS_URL</td>
+        <td><a href="http://localhost:8081/" target="_blank">http://localhost:8081/</a></td></tr>
+      <tr>
+        <td>JOB_NAME</td>
+        <td>orangeHRM1</td></tr>
+      <tr>
+        <td>Module Name</td>
+        <td>Add Employee</td></tr>
+      <tr>
+        <td>NODE_NAME</td>
+        <td>built-in</td></tr>
+      <tr>
+        <td>Platform</td>
+        <td>Windows-10-10.0.19045-SP0</td></tr>
+      <tr>
+        <td>Project Name</td>
+        <td>OrangeHRM</td></tr>
+      <tr>
+        <td>Python</td>
+        <td>3.11.3</td></tr>
+      <tr>
+        <td>Tester</td>
+        <td>Arshad</td></tr>
+      <tr>
+        <td>WORKSPACE</td>
+        <td>E:\Automation Project\OrangeHRM</td></tr></table>
+    <h2>Summary</h2>
+    <p>8 tests ran in 84.17 seconds. </p>
+    <p class="filter" hidden="true">(Un)check the boxes to filter the results.</p><input checked="true" class="filter" data-test-result="passed" hidden="true" name="filter_checkbox" onChange="filterTable(this)" type="checkbox"/><span class="passed">8 passed</span>, <input checked="true" class="filter" data-test-result="skipped" disabled="true" hidden="true" name="filter_checkbox" onChange="filterTable(this)" type="checkbox"/><span class="skipped">0 skipped</span>, <input checked="true" class="filter" data-test-result="failed" disabled="true" hidden="true" name="filter_checkbox" onChange="filterTable(this)" type="checkbox"/><span class="failed">0 failed</span>, <input checked="true" class="filter" data-test-result="error" disabled="true" hidden="true" name="filter_checkbox" onChange="filterTable(this)" type="checkbox"/><span class="error">0 errors</span>, <input checked="true" class="filter" data-test-result="xfailed" disabled="true" hidden="true" name="filter_checkbox" onChange="filterTable(this)" type="checkbox"/><span class="xfailed">0 expected failures</span>, <input checked="true" class="filter" data-test-result="xpassed" disabled="true" hidden="true" name="filter_checkbox" onChange="filterTable(this)" type="checkbox"/><span class="xpassed">0 unexpected passes</span>
+    <h2>Results</h2>
+    <table id="results-table">
+      <thead id="results-table-head">
+        <tr>
+          <th class="sortable result initial-sort" col="result">Result</th>
+          <th class="sortable" col="name">Test</th>
+          <th class="sortable" col="duration">Duration</th>
+          <th class="sortable links" col="links">Links</th></tr>
+        <tr hidden="true" id="not-found-message">
+          <th colspan="4">No results found. Try to check the filters</th></tr></thead>
+      <tbody class="passed results-table-row">
+        <tr>
+          <td class="col-result">Passed</td>
+          <td class="col-name">testCases/test_AddEmp.py::Test_Add_Employee::test_Add_Emp_003</td>
+          <td class="col-duration">30.91</td>
+          <td class="col-links"></td></tr>
+        <tr>
+          <td class="extra" colspan="4">
+            <div class="log">[gw0] win32 -- Python 3.11.3 C:\Users\HP\AppData\Local\Programs\Python\Python311\python.exe<br/>[gw0] win32 -- Python 3.11.3 C:\Users\HP\AppData\Local\Programs\Python\Python311\python.exe[gw0] win32 -- Python 3.11.3 C:\Users\HP\AppData\Local\Programs\Python\Python311\python.exe[gw0] win32 -- Python 3.11.3 C:\Users\HP\AppData\Local\Programs\Python\Python311\python.exe<br/> -----------------------------Captured stdout setup------------------------------ <br/>launching chrome browser
+<br/> -------------------------------Captured log call-------------------------------- <br/>INFO     Test_Add_Employee:test_AddEmp.py:18 test_Add_Emp_003 is started
+INFO     Test_Add_Employee:test_AddEmp.py:19 Oening Browser
+INFO     Test_Add_Employee:test_AddEmp.py:21 Opening_Url---&gt;https://opensource-demo.orangehrmlive.com/
+INFO     Test_Add_Employee:test_AddEmp.py:24 Entering Username---&gt;Admin
+INFO     Test_Add_Employee:test_AddEmp.py:27 Entering Password---&gt;admin123
+INFO     Test_Add_Employee:test_AddEmp.py:30 Click Login Button
+INFO     Test_Add_Employee:test_AddEmp.py:33 Click PIM Button
+INFO     Test_Add_Employee:test_AddEmp.py:35 Click Add Customer Button
+INFO     Test_Add_Employee:test_AddEmp.py:37 Entering first name Jhon
+INFO     Test_Add_Employee:test_AddEmp.py:39 Entering Middle Name--jay
+INFO     Test_Add_Employee:test_AddEmp.py:41 Entering Lastname---bush
+INFO     Test_Add_Employee:test_AddEmp.py:43 Click on save Button
+INFO     Test_Add_Employee:test_AddEmp.py:46 test_Add_Emp_003 is Passed
+INFO     Test_Add_Employee:test_AddEmp.py:53 test_Add_Emp_003 is completed<br/></div></td></tr></tbody>
+      <tbody class="passed results-table-row">
+        <tr>
+          <td class="col-result">Passed</td>
+          <td class="col-name">testCases/test_Login.py::Test_Login::test_login_002</td>
+          <td class="col-duration">20.24</td>
+          <td class="col-links"></td></tr>
+        <tr>
+          <td class="extra" colspan="4">
+            <div class="log">[gw1] win32 -- Python 3.11.3 C:\Users\HP\AppData\Local\Programs\Python\Python311\python.exe<br/>[gw1] win32 -- Python 3.11.3 C:\Users\HP\AppData\Local\Programs\Python\Python311\python.exe[gw1] win32 -- Python 3.11.3 C:\Users\HP\AppData\Local\Programs\Python\Python311\python.exe[gw1] win32 -- Python 3.11.3 C:\Users\HP\AppData\Local\Programs\Python\Python311\python.exe<br/> -----------------------------Captured stdout setup------------------------------ <br/>launching chrome browser
+<br/> -------------------------------Captured log call-------------------------------- <br/>INFO     Test_Login:test_Login.py:39 test_login_002 is started
+INFO     Test_Login:test_Login.py:40 Opening Browser
+INFO     Test_Login:test_Login.py:42 Opening Url --&gt;https://opensource-demo.orangehrmlive.com/
+INFO     Test_Login:test_Login.py:48 Entering username--&gt;Admin
+INFO     Test_Login:test_Login.py:52 Entering Password --&gt;admin123
+INFO     Test_Login:test_Login.py:56 Click on Login Button
+INFO     Test_Login:test_Login.py:82 Click on Menu Button 
+INFO     Test_Login:test_Login.py:84 Click on Logout Button
+INFO     Test_Login:test_Login.py:90 test_login_002 is completed<br/></div></td></tr></tbody>
+      <tbody class="passed results-table-row">
+        <tr>
+          <td class="col-result">Passed</td>
+          <td class="col-name">testCases/test_Login_Params.py::Test_Login::test_login_params_004[getDataforlogin0]</td>
+          <td class="col-duration">22.49</td>
+          <td class="col-links"></td></tr>
+        <tr>
+          <td class="extra" colspan="4">
+            <div class="log">[gw2] win32 -- Python 3.11.3 C:\Users\HP\AppData\Local\Programs\Python\Python311\python.exe<br/>[gw2] win32 -- Python 3.11.3 C:\Users\HP\AppData\Local\Programs\Python\Python311\python.exe[gw2] win32 -- Python 3.11.3 C:\Users\HP\AppData\Local\Programs\Python\Python311\python.exe[gw2] win32 -- Python 3.11.3 C:\Users\HP\AppData\Local\Programs\Python\Python311\python.exe<br/> -----------------------------Captured stdout setup------------------------------ <br/>launching chrome browser
+<br/> -------------------------------Captured log setup------------------------------- <br/>WARNING  selenium.webdriver.common.selenium_manager:selenium_manager.py:127 Error getting version of chromedriver 115. Retrying with chromedriver 114 (attempt 1/5)<br/> -------------------------------Captured log call-------------------------------- <br/>INFO     Test_Login:test_Login_Params.py:20 test_login_params_004 is started
+INFO     Test_Login:test_Login_Params.py:21 Opening Browser
+INFO     Test_Login:test_Login_Params.py:23 Opening Url --&gt;https://opensource-demo.orangehrmlive.com/
+INFO     Test_Login:test_Login_Params.py:30 Entering username--&gt;Admin
+INFO     Test_Login:test_Login_Params.py:36 Entering pasword--&gt;admin123
+INFO     Test_Login:test_Login_Params.py:41 Click on Login Button
+INFO     Test_Login:test_Login_Params.py:69 Click on Menu Button 
+INFO     Test_Login:test_Login_Params.py:71 Click on Logout Button
+INFO     Test_Login:test_Login_Params.py:72 test_login_params_004 passed
+INFO     Test_Login:test_Login_Params.py:97 test_login_params_004 is Passed
+INFO     Test_Login:test_Login_Params.py:102 test_login_002 is completed<br/></div></td></tr></tbody>
+      <tbody class="passed results-table-row">
+        <tr>
+          <td class="col-result">Passed</td>
+          <td class="col-name">testCases/test_Login_Params.py::Test_Login::test_login_params_004[getDataforlogin2]</td>
+          <td class="col-duration">30.33</td>
+          <td class="col-links"></td></tr>
+        <tr>
+          <td class="extra" colspan="4">
+            <div class="log">[gw3] win32 -- Python 3.11.3 C:\Users\HP\AppData\Local\Programs\Python\Python311\python.exe<br/>[gw3] win32 -- Python 3.11.3 C:\Users\HP\AppData\Local\Programs\Python\Python311\python.exe[gw3] win32 -- Python 3.11.3 C:\Users\HP\AppData\Local\Programs\Python\Python311\python.exe[gw3] win32 -- Python 3.11.3 C:\Users\HP\AppData\Local\Programs\Python\Python311\python.exe<br/> -----------------------------Captured stdout setup------------------------------ <br/>launching chrome browser
+<br/> -------------------------------Captured log setup------------------------------- <br/>WARNING  selenium.webdriver.common.selenium_manager:selenium_manager.py:127 Error getting version of chromedriver 115. Retrying with chromedriver 114 (attempt 1/5)<br/> -------------------------------Captured log call-------------------------------- <br/>INFO     Test_Login:test_Login_Params.py:20 test_login_params_004 is started
+INFO     Test_Login:test_Login_Params.py:21 Opening Browser
+INFO     Test_Login:test_Login_Params.py:23 Opening Url --&gt;https://opensource-demo.orangehrmlive.com/
+INFO     Test_Login:test_Login_Params.py:30 Entering username--&gt;Admin
+INFO     Test_Login:test_Login_Params.py:36 Entering pasword--&gt;admin1231
+INFO     Test_Login:test_Login_Params.py:41 Click on Login Button
+INFO     Test_Login:test_Login_Params.py:92 test_login_params_004 passed
+INFO     Test_Login:test_Login_Params.py:97 test_login_params_004 is Passed
+INFO     Test_Login:test_Login_Params.py:102 test_login_002 is completed<br/></div></td></tr></tbody>
+      <tbody class="passed results-table-row">
+        <tr>
+          <td class="col-result">Passed</td>
+          <td class="col-name">testCases/test_Login_DDT.py::Test_Login_DDT::test_Login_DDT_005</td>
+          <td class="col-duration">57.22</td>
+          <td class="col-links"></td></tr>
+        <tr>
+          <td class="extra" colspan="4">
+            <div class="log">[gw1] win32 -- Python 3.11.3 C:\Users\HP\AppData\Local\Programs\Python\Python311\python.exe<br/>[gw1] win32 -- Python 3.11.3 C:\Users\HP\AppData\Local\Programs\Python\Python311\python.exe[gw1] win32 -- Python 3.11.3 C:\Users\HP\AppData\Local\Programs\Python\Python311\python.exe[gw1] win32 -- Python 3.11.3 C:\Users\HP\AppData\Local\Programs\Python\Python311\python.exe<br/> -----------------------------Captured stdout setup------------------------------ <br/>launching chrome browser
+<br/> ------------------------------Captured stdout call------------------------------ <br/>Number of rows are---&gt;5
+[&#x27;Pass&#x27;, &#x27;Pass&#x27;, &#x27;Pass&#x27;, &#x27;Pass&#x27;]
+<br/> -------------------------------Captured log call-------------------------------- <br/>INFO     Test_Login_DDT:test_Login_DDT.py:18 test_Login_DDT_005 is started
+INFO     Test_Login_DDT:test_Login_DDT.py:19 opening browser
+INFO     Test_Login_DDT:test_Login_DDT.py:21 Opening Url--&gt;https://opensource-demo.orangehrmlive.com/
+INFO     Test_Login_DDT:test_Login_DDT.py:32 Entering Username---&gt;Admin
+INFO     Test_Login_DDT:test_Login_DDT.py:34 Entering Password---&gt;admin123
+INFO     Test_Login_DDT:test_Login_DDT.py:36 Click on Login Button
+INFO     Test_Login_DDT:test_Login_DDT.py:42 Click on Menu Button
+INFO     Test_Login_DDT:test_Login_DDT.py:44 Click on Logout Button
+INFO     Test_Login_DDT:test_Login_DDT.py:32 Entering Username---&gt;Admin1
+INFO     Test_Login_DDT:test_Login_DDT.py:34 Entering Password---&gt;admin123
+INFO     Test_Login_DDT:test_Login_DDT.py:36 Click on Login Button
+INFO     Test_Login_DDT:test_Login_DDT.py:32 Entering Username---&gt;Admin
+INFO     Test_Login_DDT:test_Login_DDT.py:34 Entering Password---&gt;admin1231
+INFO     Test_Login_DDT:test_Login_DDT.py:36 Click on Login Button
+INFO     Test_Login_DDT:test_Login_DDT.py:32 Entering Username---&gt;Admin1
+INFO     Test_Login_DDT:test_Login_DDT.py:34 Entering Password---&gt;admin1231
+INFO     Test_Login_DDT:test_Login_DDT.py:36 Click on Login Button
+INFO     Test_Login_DDT:test_Login_DDT.py:71 test_Login_DDT_005 is Passed
+INFO     Test_Login_DDT:test_Login_DDT.py:77 test_Login_DDT_005 iscompleted<br/></div></td></tr></tbody>
+      <tbody class="passed results-table-row">
+        <tr>
+          <td class="col-result">Passed</td>
+          <td class="col-name">testCases/test_Login_Params.py::Test_Login::test_login_params_004[getDataforlogin1]</td>
+          <td class="col-duration">24.04</td>
+          <td class="col-links"></td></tr>
+        <tr>
+          <td class="extra" colspan="4">
+            <div class="log">[gw2] win32 -- Python 3.11.3 C:\Users\HP\AppData\Local\Programs\Python\Python311\python.exe<br/>[gw2] win32 -- Python 3.11.3 C:\Users\HP\AppData\Local\Programs\Python\Python311\python.exe[gw2] win32 -- Python 3.11.3 C:\Users\HP\AppData\Local\Programs\Python\Python311\python.exe[gw2] win32 -- Python 3.11.3 C:\Users\HP\AppData\Local\Programs\Python\Python311\python.exe<br/> -----------------------------Captured stdout setup------------------------------ <br/>launching chrome browser
+<br/> -------------------------------Captured log call-------------------------------- <br/>INFO     Test_Login:test_Login_Params.py:20 test_login_params_004 is started
+INFO     Test_Login:test_Login_Params.py:21 Opening Browser
+INFO     Test_Login:test_Login_Params.py:23 Opening Url --&gt;https://opensource-demo.orangehrmlive.com/
+INFO     Test_Login:test_Login_Params.py:30 Entering username--&gt;Admin1
+INFO     Test_Login:test_Login_Params.py:36 Entering pasword--&gt;admin123
+INFO     Test_Login:test_Login_Params.py:41 Click on Login Button
+INFO     Test_Login:test_Login_Params.py:92 test_login_params_004 passed
+INFO     Test_Login:test_Login_Params.py:97 test_login_params_004 is Passed
+INFO     Test_Login:test_Login_Params.py:102 test_login_002 is completed<br/></div></td></tr></tbody>
+      <tbody class="passed results-table-row">
+        <tr>
+          <td class="col-result">Passed</td>
+          <td class="col-name">testCases/test_Login.py::Test_Login::test_Page_Title_001</td>
+          <td class="col-duration">13.42</td>
+          <td class="col-links"></td></tr>
+        <tr>
+          <td class="extra" colspan="4">
+            <div class="log">[gw0] win32 -- Python 3.11.3 C:\Users\HP\AppData\Local\Programs\Python\Python311\python.exe<br/>[gw0] win32 -- Python 3.11.3 C:\Users\HP\AppData\Local\Programs\Python\Python311\python.exe[gw0] win32 -- Python 3.11.3 C:\Users\HP\AppData\Local\Programs\Python\Python311\python.exe[gw0] win32 -- Python 3.11.3 C:\Users\HP\AppData\Local\Programs\Python\Python311\python.exe<br/> -----------------------------Captured stdout setup------------------------------ <br/>launching chrome browser
+<br/> -------------------------------Captured log call-------------------------------- <br/>INFO     Test_Login:test_Login.py:22 test_Page_Title_001 started
+INFO     Test_Login:test_Login.py:23 opening browser
+INFO     Test_Login:test_Login.py:25 Go to this Url--&gt;https://opensource-demo.orangehrmlive.com/
+INFO     Test_Login:test_Login.py:27 test_Page_Title_001 is Passed
+INFO     Test_Login:test_Login.py:28 Page Title is--&gt;OrangeHRM
+INFO     Test_Login:test_Login.py:34 test_Page_Title_001 is completed<br/></div></td></tr></tbody>
+      <tbody class="passed results-table-row">
+        <tr>
+          <td class="col-result">Passed</td>
+          <td class="col-name">testCases/test_Login_Params.py::Test_Login::test_login_params_004[getDataforlogin3]</td>
+          <td class="col-duration">28.57</td>
+          <td class="col-links"></td></tr>
+        <tr>
+          <td class="extra" colspan="4">
+            <div class="log">[gw3] win32 -- Python 3.11.3 C:\Users\HP\AppData\Local\Programs\Python\Python311\python.exe<br/>[gw3] win32 -- Python 3.11.3 C:\Users\HP\AppData\Local\Programs\Python\Python311\python.exe[gw3] win32 -- Python 3.11.3 C:\Users\HP\AppData\Local\Programs\Python\Python311\python.exe[gw3] win32 -- Python 3.11.3 C:\Users\HP\AppData\Local\Programs\Python\Python311\python.exe<br/> -----------------------------Captured stdout setup------------------------------ <br/>launching chrome browser
+<br/> -------------------------------Captured log call-------------------------------- <br/>INFO     Test_Login:test_Login_Params.py:20 test_login_params_004 is started
+INFO     Test_Login:test_Login_Params.py:21 Opening Browser
+INFO     Test_Login:test_Login_Params.py:23 Opening Url --&gt;https://opensource-demo.orangehrmlive.com/
+INFO     Test_Login:test_Login_Params.py:30 Entering username--&gt;Admin1
+INFO     Test_Login:test_Login_Params.py:36 Entering pasword--&gt;admin1231
+INFO     Test_Login:test_Login_Params.py:41 Click on Login Button
+INFO     Test_Login:test_Login_Params.py:92 test_login_params_004 passed
+INFO     Test_Login:test_Login_Params.py:97 test_login_params_004 is Passed
+INFO     Test_Login:test_Login_Params.py:102 test_login_002 is completed<br/></div></td></tr></tbody></table></body></html>
