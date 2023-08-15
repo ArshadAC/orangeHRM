@@ -1,0 +1,11 @@
+[32mINFO    [0m Test_Add_Employee:test_AddEmp.py:18 test_Add_Emp_003 is started
+[32mINFO    [0m Test_Add_Employee:test_AddEmp.py:19 Oening Browser
+[32mINFO    [0m Test_Add_Employee:test_AddEmp.py:21 Opening_Url--->https://opensource-demo.orangehrmlive.com/
+[32mINFO    [0m Test_Add_Employee:test_AddEmp.py:24 Entering Username--->Admin
+[32mINFO    [0m Test_Add_Employee:test_AddEmp.py:27 Entering Password--->admin123
+[32mINFO    [0m Test_Add_Employee:test_AddEmp.py:30 Click Login Button
+[32mINFO    [0m Test_Add_Employee:test_AddEmp.py:33 Click PIM Button
+[32mINFO    [0m Test_Add_Employee:test_AddEmp.py:35 Click Add Customer Button
+[32mINFO    [0m Test_Add_Employee:test_AddEmp.py:37 Entering first name Jhon
+[32mINFO    [0m Test_Add_Employee:test_AddEmp.py:39 Entering Middle Name--jay
+[32mINFO    [0m Test_Add_Employee:test_AddEmp.py:41 Entering Lastname---bush

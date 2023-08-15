@@ -789,3 +789,121 @@
  2023-08-15 20:14:58,589 : INFO : Test_Login_DDT : test_Login_DDT_005 : 36 : Click on Login Button
  2023-08-15 20:15:10,398 : INFO : Test_Login_DDT : test_Login_DDT_005 : 71 : test_Login_DDT_005 is Passed
  2023-08-15 20:15:10,507 : INFO : Test_Login_DDT : test_Login_DDT_005 : 77 : test_Login_DDT_005 iscompleted
+ 2023-08-15 21:12:19,169 : INFO : Test_Add_Employee : test_Add_Emp_003 : 18 : test_Add_Emp_003 is started
+ 2023-08-15 21:12:19,170 : INFO : Test_Add_Employee : test_Add_Emp_003 : 19 : Oening Browser
+ 2023-08-15 21:12:54,654 : INFO : Test_Add_Employee : test_Add_Emp_003 : 21 : Opening_Url--->https://opensource-demo.orangehrmlive.com/
+ 2023-08-15 21:12:56,744 : INFO : Test_Add_Employee : test_Add_Emp_003 : 24 : Entering Username--->Admin
+ 2023-08-15 21:12:56,835 : INFO : Test_Add_Employee : test_Add_Emp_003 : 27 : Entering Password--->admin123
+ 2023-08-15 21:12:56,896 : INFO : Test_Add_Employee : test_Add_Emp_003 : 30 : Click Login Button
+ 2023-08-15 21:13:01,925 : INFO : Test_Add_Employee : test_Add_Emp_003 : 33 : Click PIM Button
+ 2023-08-15 21:13:03,595 : INFO : Test_Add_Employee : test_Add_Emp_003 : 35 : Click Add Customer Button
+ 2023-08-15 21:13:04,191 : INFO : Test_Add_Employee : test_Add_Emp_003 : 37 : Entering first name Jhon
+ 2023-08-15 21:13:04,263 : INFO : Test_Add_Employee : test_Add_Emp_003 : 39 : Entering Middle Name--jay
+ 2023-08-15 21:13:04,334 : INFO : Test_Add_Employee : test_Add_Emp_003 : 41 : Entering Lastname---bush
+ 2023-08-15 21:13:07,167 : INFO : Test_Login : test_Page_Title_001 : 22 : test_Page_Title_001 started
+ 2023-08-15 21:13:07,167 : INFO : Test_Login : test_Page_Title_001 : 22 : test_Page_Title_001 started
+ 2023-08-15 21:13:07,168 : INFO : Test_Login : test_Page_Title_001 : 23 : opening browser
+ 2023-08-15 21:13:07,168 : INFO : Test_Login : test_Page_Title_001 : 23 : opening browser
+ 2023-08-15 21:13:14,037 : INFO : Test_Login : test_Page_Title_001 : 25 : Go to this Url-->https://opensource-demo.orangehrmlive.com/
+ 2023-08-15 21:13:14,037 : INFO : Test_Login : test_Page_Title_001 : 25 : Go to this Url-->https://opensource-demo.orangehrmlive.com/
+ 2023-08-15 21:13:14,043 : INFO : Test_Login : test_Page_Title_001 : 27 : test_Page_Title_001 is Passed
+ 2023-08-15 21:13:14,043 : INFO : Test_Login : test_Page_Title_001 : 27 : test_Page_Title_001 is Passed
+ 2023-08-15 21:13:14,047 : INFO : Test_Login : test_Page_Title_001 : 28 : Page Title is-->OrangeHRM
+ 2023-08-15 21:13:14,047 : INFO : Test_Login : test_Page_Title_001 : 28 : Page Title is-->OrangeHRM
+ 2023-08-15 21:13:14,086 : INFO : Test_Login : test_Page_Title_001 : 34 : test_Page_Title_001 is completed
+ 2023-08-15 21:13:14,086 : INFO : Test_Login : test_Page_Title_001 : 34 : test_Page_Title_001 is completed
+ 2023-08-15 21:13:15,598 : INFO : Test_Login : test_login_002 : 39 : test_login_002 is started
+ 2023-08-15 21:13:15,598 : INFO : Test_Login : test_login_002 : 39 : test_login_002 is started
+ 2023-08-15 21:13:15,599 : INFO : Test_Login : test_login_002 : 40 : Opening Browser
+ 2023-08-15 21:13:15,599 : INFO : Test_Login : test_login_002 : 40 : Opening Browser
+ 2023-08-15 21:13:29,626 : INFO : Test_Login : test_login_002 : 42 : Opening Url -->https://opensource-demo.orangehrmlive.com/
+ 2023-08-15 21:13:29,626 : INFO : Test_Login : test_login_002 : 42 : Opening Url -->https://opensource-demo.orangehrmlive.com/
+ 2023-08-15 21:13:32,898 : INFO : Test_Login : test_login_002 : 48 : Entering username-->Admin
+ 2023-08-15 21:13:32,898 : INFO : Test_Login : test_login_002 : 48 : Entering username-->Admin
+ 2023-08-15 21:13:32,985 : INFO : Test_Login : test_login_002 : 52 : Entering Password -->admin123
+ 2023-08-15 21:13:32,985 : INFO : Test_Login : test_login_002 : 52 : Entering Password -->admin123
+ 2023-08-15 21:13:33,038 : INFO : Test_Login : test_login_002 : 56 : Click on Login Button
+ 2023-08-15 21:13:33,038 : INFO : Test_Login : test_login_002 : 56 : Click on Login Button
+ 2023-08-15 21:14:01,139 : INFO : Test_Login_DDT : test_Login_DDT_005 : 18 : test_Login_DDT_005 is started
+ 2023-08-15 21:14:01,140 : INFO : Test_Login_DDT : test_Login_DDT_005 : 19 : opening browser
+ 2023-08-15 21:14:18,863 : INFO : Test_Login_DDT : test_Login_DDT_005 : 21 : Opening Url-->https://opensource-demo.orangehrmlive.com/
+ 2023-08-15 21:14:20,974 : INFO : Test_Login_DDT : test_Login_DDT_005 : 32 : Entering Username--->Admin
+ 2023-08-15 21:14:21,060 : INFO : Test_Login_DDT : test_Login_DDT_005 : 34 : Entering Password--->admin123
+ 2023-08-15 21:14:21,115 : INFO : Test_Login_DDT : test_Login_DDT_005 : 36 : Click on Login Button
+ 2023-08-15 21:14:27,236 : INFO : Test_Login_DDT : test_Login_DDT_005 : 42 : Click on Menu Button
+ 2023-08-15 21:14:29,905 : INFO : Test_Login_DDT : test_Login_DDT_005 : 44 : Click on Logout Button
+ 2023-08-15 21:14:30,317 : INFO : Test_Login_DDT : test_Login_DDT_005 : 32 : Entering Username--->Admin1
+ 2023-08-15 21:14:30,397 : INFO : Test_Login_DDT : test_Login_DDT_005 : 34 : Entering Password--->admin123
+ 2023-08-15 21:14:30,448 : INFO : Test_Login_DDT : test_Login_DDT_005 : 36 : Click on Login Button
+ 2023-08-15 21:15:19,923 : INFO : Test_Login_DDT : test_Login_DDT_005 : 32 : Entering Username--->Admin
+ 2023-08-15 21:15:19,998 : INFO : Test_Login_DDT : test_Login_DDT_005 : 34 : Entering Password--->admin1231
+ 2023-08-15 21:15:20,070 : INFO : Test_Login_DDT : test_Login_DDT_005 : 36 : Click on Login Button
+ 2023-08-15 21:15:31,282 : INFO : Test_Login_DDT : test_Login_DDT_005 : 32 : Entering Username--->Admin1
+ 2023-08-15 21:15:31,359 : INFO : Test_Login_DDT : test_Login_DDT_005 : 34 : Entering Password--->admin1231
+ 2023-08-15 21:15:31,413 : INFO : Test_Login_DDT : test_Login_DDT_005 : 36 : Click on Login Button
+ 2023-08-15 21:15:42,298 : INFO : Test_Login_DDT : test_Login_DDT_005 : 71 : test_Login_DDT_005 is Passed
+ 2023-08-15 21:15:42,319 : INFO : Test_Login_DDT : test_Login_DDT_005 : 77 : test_Login_DDT_005 iscompleted
+ 2023-08-15 21:15:43,985 : INFO : Test_Login : test_login_params_004 : 20 : test_login_params_004 is started
+ 2023-08-15 21:15:43,985 : INFO : Test_Login : test_login_params_004 : 20 : test_login_params_004 is started
+ 2023-08-15 21:15:43,985 : INFO : Test_Login : test_login_params_004 : 21 : Opening Browser
+ 2023-08-15 21:15:43,985 : INFO : Test_Login : test_login_params_004 : 21 : Opening Browser
+ 2023-08-15 21:16:08,848 : INFO : Test_Login : test_login_params_004 : 23 : Opening Url -->https://opensource-demo.orangehrmlive.com/
+ 2023-08-15 21:16:08,848 : INFO : Test_Login : test_login_params_004 : 23 : Opening Url -->https://opensource-demo.orangehrmlive.com/
+ 2023-08-15 21:16:10,831 : INFO : Test_Login : test_login_params_004 : 30 : Entering username-->Admin
+ 2023-08-15 21:16:10,831 : INFO : Test_Login : test_login_params_004 : 30 : Entering username-->Admin
+ 2023-08-15 21:16:10,924 : INFO : Test_Login : test_login_params_004 : 36 : Entering pasword-->admin123
+ 2023-08-15 21:16:10,924 : INFO : Test_Login : test_login_params_004 : 36 : Entering pasword-->admin123
+ 2023-08-15 21:16:10,988 : INFO : Test_Login : test_login_params_004 : 41 : Click on Login Button
+ 2023-08-15 21:16:10,988 : INFO : Test_Login : test_login_params_004 : 41 : Click on Login Button
+ 2023-08-15 21:16:13,506 : INFO : Test_Login : test_login_params_004 : 69 : Click on Menu Button 
+ 2023-08-15 21:16:13,506 : INFO : Test_Login : test_login_params_004 : 69 : Click on Menu Button 
+ 2023-08-15 21:16:15,729 : INFO : Test_Login : test_login_params_004 : 71 : Click on Logout Button
+ 2023-08-15 21:16:15,729 : INFO : Test_Login : test_login_params_004 : 71 : Click on Logout Button
+ 2023-08-15 21:16:15,729 : INFO : Test_Login : test_login_params_004 : 72 : test_login_params_004 passed
+ 2023-08-15 21:16:15,729 : INFO : Test_Login : test_login_params_004 : 72 : test_login_params_004 passed
+ 2023-08-15 21:16:15,729 : INFO : Test_Login : test_login_params_004 : 97 : test_login_params_004 is Passed
+ 2023-08-15 21:16:15,729 : INFO : Test_Login : test_login_params_004 : 97 : test_login_params_004 is Passed
+ 2023-08-15 21:16:15,750 : INFO : Test_Login : test_login_params_004 : 102 : test_login_002 is completed
+ 2023-08-15 21:16:15,750 : INFO : Test_Login : test_login_params_004 : 102 : test_login_002 is completed
+ 2023-08-15 21:16:18,052 : INFO : Test_Login : test_login_params_004 : 20 : test_login_params_004 is started
+ 2023-08-15 21:16:18,052 : INFO : Test_Login : test_login_params_004 : 20 : test_login_params_004 is started
+ 2023-08-15 21:16:18,052 : INFO : Test_Login : test_login_params_004 : 21 : Opening Browser
+ 2023-08-15 21:16:18,052 : INFO : Test_Login : test_login_params_004 : 21 : Opening Browser
+ 2023-08-15 21:17:06,394 : INFO : Test_Login : test_login_params_004 : 23 : Opening Url -->https://opensource-demo.orangehrmlive.com/
+ 2023-08-15 21:17:06,394 : INFO : Test_Login : test_login_params_004 : 23 : Opening Url -->https://opensource-demo.orangehrmlive.com/
+ 2023-08-15 21:17:18,128 : INFO : Test_Login : test_login_params_004 : 20 : test_login_params_004 is started
+ 2023-08-15 21:17:18,128 : INFO : Test_Login : test_login_params_004 : 20 : test_login_params_004 is started
+ 2023-08-15 21:17:18,129 : INFO : Test_Login : test_login_params_004 : 21 : Opening Browser
+ 2023-08-15 21:17:18,129 : INFO : Test_Login : test_login_params_004 : 21 : Opening Browser
+ 2023-08-15 21:17:24,245 : INFO : Test_Login : test_login_params_004 : 23 : Opening Url -->https://opensource-demo.orangehrmlive.com/
+ 2023-08-15 21:17:24,245 : INFO : Test_Login : test_login_params_004 : 23 : Opening Url -->https://opensource-demo.orangehrmlive.com/
+ 2023-08-15 21:17:25,076 : INFO : Test_Login : test_login_params_004 : 30 : Entering username-->Admin
+ 2023-08-15 21:17:25,076 : INFO : Test_Login : test_login_params_004 : 30 : Entering username-->Admin
+ 2023-08-15 21:17:25,165 : INFO : Test_Login : test_login_params_004 : 36 : Entering pasword-->admin1231
+ 2023-08-15 21:17:25,165 : INFO : Test_Login : test_login_params_004 : 36 : Entering pasword-->admin1231
+ 2023-08-15 21:17:25,229 : INFO : Test_Login : test_login_params_004 : 41 : Click on Login Button
+ 2023-08-15 21:17:25,229 : INFO : Test_Login : test_login_params_004 : 41 : Click on Login Button
+ 2023-08-15 21:17:36,911 : INFO : Test_Login : test_login_params_004 : 92 : test_login_params_004 passed
+ 2023-08-15 21:17:36,911 : INFO : Test_Login : test_login_params_004 : 92 : test_login_params_004 passed
+ 2023-08-15 21:17:36,912 : INFO : Test_Login : test_login_params_004 : 97 : test_login_params_004 is Passed
+ 2023-08-15 21:17:36,912 : INFO : Test_Login : test_login_params_004 : 97 : test_login_params_004 is Passed
+ 2023-08-15 21:17:36,934 : INFO : Test_Login : test_login_params_004 : 102 : test_login_002 is completed
+ 2023-08-15 21:17:36,934 : INFO : Test_Login : test_login_params_004 : 102 : test_login_002 is completed
+ 2023-08-15 21:17:38,403 : INFO : Test_Login : test_login_params_004 : 20 : test_login_params_004 is started
+ 2023-08-15 21:17:38,403 : INFO : Test_Login : test_login_params_004 : 20 : test_login_params_004 is started
+ 2023-08-15 21:17:38,404 : INFO : Test_Login : test_login_params_004 : 21 : Opening Browser
+ 2023-08-15 21:17:38,404 : INFO : Test_Login : test_login_params_004 : 21 : Opening Browser
+ 2023-08-15 21:17:47,823 : INFO : Test_Login : test_login_params_004 : 23 : Opening Url -->https://opensource-demo.orangehrmlive.com/
+ 2023-08-15 21:17:47,823 : INFO : Test_Login : test_login_params_004 : 23 : Opening Url -->https://opensource-demo.orangehrmlive.com/
+ 2023-08-15 21:17:48,637 : INFO : Test_Login : test_login_params_004 : 30 : Entering username-->Admin1
+ 2023-08-15 21:17:48,637 : INFO : Test_Login : test_login_params_004 : 30 : Entering username-->Admin1
+ 2023-08-15 21:17:48,729 : INFO : Test_Login : test_login_params_004 : 36 : Entering pasword-->admin1231
+ 2023-08-15 21:17:48,729 : INFO : Test_Login : test_login_params_004 : 36 : Entering pasword-->admin1231
+ 2023-08-15 21:17:48,797 : INFO : Test_Login : test_login_params_004 : 41 : Click on Login Button
+ 2023-08-15 21:17:48,797 : INFO : Test_Login : test_login_params_004 : 41 : Click on Login Button
+ 2023-08-15 21:18:00,162 : INFO : Test_Login : test_login_params_004 : 92 : test_login_params_004 passed
+ 2023-08-15 21:18:00,162 : INFO : Test_Login : test_login_params_004 : 92 : test_login_params_004 passed
+ 2023-08-15 21:18:00,162 : INFO : Test_Login : test_login_params_004 : 97 : test_login_params_004 is Passed
+ 2023-08-15 21:18:00,162 : INFO : Test_Login : test_login_params_004 : 97 : test_login_params_004 is Passed
+ 2023-08-15 21:18:00,181 : INFO : Test_Login : test_login_params_004 : 102 : test_login_002 is completed
+ 2023-08-15 21:18:00,181 : INFO : Test_Login : test_login_params_004 : 102 : test_login_002 is completed

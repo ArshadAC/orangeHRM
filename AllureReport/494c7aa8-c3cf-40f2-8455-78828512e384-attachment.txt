@@ -1,0 +1,4 @@
+[33mWARNING [0m selenium.webdriver.common.selenium_manager:selenium_manager.py:127 Error getting version of chromedriver 115. Retrying with chromedriver 114 (attempt 1/5)
+[32mINFO    [0m Test_Login:test_Login_Params.py:20 test_login_params_004 is started
+[32mINFO    [0m Test_Login:test_Login_Params.py:21 Opening Browser
+[32mINFO    [0m Test_Login:test_Login_Params.py:23 Opening Url -->https://opensource-demo.orangehrmlive.com/
